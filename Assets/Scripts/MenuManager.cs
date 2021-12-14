@@ -11,6 +11,7 @@ public class MenuManager : MonoBehaviour
     public InputField inputName;
 
     public string nameHero;
+    public string namePlayer;
     public int scoreBest;
 
     private void Awake()
@@ -42,7 +43,12 @@ public class MenuManager : MonoBehaviour
 
     public void SetPlayerName()
     {
-        nameHero = inputName.text;
-        Debug.Log("name " + nameHero);
+        namePlayer = inputName.text;
+        
+    }
+
+    public void SaveNewRecord(string name, int score)
+    {
+
     }
 }

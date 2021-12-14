@@ -75,7 +75,7 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         if(m_Points > MenuManager.Instance.scoreBest)
         {
-
+            MenuManager.Instance.SaveNewRecord(MenuManager.Instance.namePlayer, m_Points);
         }
         GameOverText.SetActive(true);
     }
