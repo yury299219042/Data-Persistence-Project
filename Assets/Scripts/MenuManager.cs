@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MenuManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class MenuManager : MonoBehaviour
 
     public string nameHero;
     public string namePlayer;
-    public int scoreBest;
+    public int bestScore;
 
     private void Awake()
     {
@@ -28,7 +29,12 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        
+        LoadRecord();
+        if (nameHero != "")
+        {
+            GameObject.Find("Placeholder").GetComponent<Text>().text = nameHero;
+        }
+        GameObject.Find("Best Score Text").GetComponent<Text>().text = "Best Score: " + nameHero + " : " + bestScore;
     }
 
     public void StartGame()
@@ -47,8 +53,34 @@ public class MenuManager : MonoBehaviour
         
     }
 
+    [System.Serializable]
+    class SaveData
+    {
+        public string nameBest;
+        public int scoreBest;
+    }
+
     public void SaveNewRecord(string name, int score)
     {
+        SaveData data = new SaveData();
+        data.nameBest = name;
+        data.scoreBest = score;
 
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadRecord()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            nameHero = data.nameBest;
+            bestScore = data.scoreBest;
+        }
     }
 }
